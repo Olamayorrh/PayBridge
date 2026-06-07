@@ -1,11 +1,12 @@
-import './App.css'
+import './App.css';
+import { AppRoutes } from './components/routes/routes';
 
 function App() {
   return (
     <>
-    <p> This page is blank</p>
+      <AppRoutes />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
