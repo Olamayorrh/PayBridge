@@ -1,11 +1,12 @@
 import { Routes, Route } from 'react-router-dom';
 import { Login } from '../../pages/login';
+import { SignUp } from '../../pages/sign-up';
 
 export function AppRoutes() {
   return (
-    <div>
+    <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/sign-up" element={<SignUp />} />
-    </div>
+    </Routes>
   );
 }
