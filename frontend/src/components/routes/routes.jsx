@@ -4,10 +4,12 @@ import { SignUp } from '../../pages/auth/sign-up';
 import { AdminLogin } from '../../pages/auth/admin-login';
 import { AdminSignUp } from '../../pages/auth/admin-sign-up';
 import { BuyerDashBoard } from '../../pages/Buyer/dashboard';
+import Landing from '../../pages/landing';
 
 export function AppRoutes() {
   return (
     <Routes>
+       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/sign-up" element={<SignUp />} />
       <Route path="/admin-sign-up" element={<AdminSignUp />} />

@@ -1,4 +1,5 @@
-import {motion} from "framer-motion"
+
+import { motion } from 'framer-motion';
 import img1 from '../../assets/images/phone1.png';
 import {
   RiGitRepositoryPrivateLine,
@@ -9,6 +10,8 @@ import {
   RiShieldCheckFill,
   RiServiceLine,
 } from '@remixicon/react';
+
+
 
 const ValueProposition = () => {
   const value = [
