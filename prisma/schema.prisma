@@ -1,0 +1,46 @@
+//Escrow/prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+
+/* ADD YOUR USER MODEL HERE */
+model User {
+  id        String   @id @default(uuid())
+
+  firstName String
+  lastName  String
+
+  email     String   @unique
+  phone     String?  @unique
+
+  password  String
+
+  role      UserRole @default(BUYER)
+  status    UserStatus @default(ACTIVE)
+
+  isEmailVerified Boolean @default(false)
+
+  lastLoginAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum UserRole {
+  BUYER
+  SELLER
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  DELETED
+}
+
