@@ -1,7 +1,7 @@
-export function Login(){
-    return(
-        <div>
-            <p>hello</p>
-        </div>
-    )
+export function Login() {
+  return (
+    <div>
+      <p>hello</p>
+    </div>
+  );
 }

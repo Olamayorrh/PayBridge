@@ -1,10 +1,14 @@
-import './App.css';
-import { AppRoutes } from './components/routes/routes';
+import { Route, Routes } from 'react-router-dom';
+import './index.css';
+import Landing from './pages/landing';
+
 
 function App() {
   return (
     <>
-      <AppRoutes />
+      <Routes>
+        <Route path="/" element={<Landing />} />
+      </Routes>
     </>
   );
 }

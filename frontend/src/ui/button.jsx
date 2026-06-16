@@ -1,7 +1,3 @@
-export function Button(){
-    return(
-        <div>
-            
-        </div>
-    )
+export function Button() {
+  return <div></div>;
 }
