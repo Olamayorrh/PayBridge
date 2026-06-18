@@ -2,10 +2,11 @@
 @import "tailwindcss";
 
 @theme {
-  --color-the-bright-side:"#FCC003";
-  --color-coarse-wool:"#151827";
+  --color-the-bright-side: #FCC003;
+  --color-coarse-wool: #151827;
   --breakpoint-sm: 640px;
-  --font-birthstone:"Birthstone", cursive;
+  --font-birthstone: "Birthstone", cursive;
+  --font-inter: "Inter", sans-serif;
 }
 .custom-shape-divider-bottom-1781020211 {
     position: absolute;

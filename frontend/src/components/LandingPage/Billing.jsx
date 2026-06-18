@@ -1,4 +1,3 @@
-import React from 'react';
 import img from "../../assets/images/escrow_img.png"
 
 const Billing = () => {
@@ -72,7 +71,7 @@ const Billing = () => {
           <div className="w-[100%] p-2">
             <div className="m-[5%] p-3">
               <div>
-                <h1 className="text-0.9rem] md:text-[1.3rem] font-medium my-2">Fair Fee Cap</h1>
+                <h1 className="text-[0.9rem] md:text-[1.3rem] font-medium my-2">Fair Fee Cap</h1>
                 <p className="text-[0.7rem]">Large transactions shouldn't mean unlimited fees.</p>
                 <ul className="list-disc list-inside mt-4 text-[0.7rem]">
                   <li>Maximum fee cap applies</li>

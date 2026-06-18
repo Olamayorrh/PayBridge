@@ -9,7 +9,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="border-b border-amber-300 bt p-3 flex flex-col md:flex-row justify-between md:justify-around items-stretch md:items-center w-full bg-[#151827] text-white">
+    <nav className="border-b border-amber-300 p-3 flex flex-col md:flex-row justify-between md:justify-around items-stretch md:items-center w-full bg-[#151827] text-white">
       <div className="flex justify-between items-center w-full md:w-auto p-2">
         <div className="text-[1.3rem] md:text-4xl xl:text-[1.8rem] font-bold">payBridge</div>
         <button

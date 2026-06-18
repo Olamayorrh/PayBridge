@@ -278,6 +278,9 @@ export function SignUp() {
                 Login
               </Link>
             </p>
+            <div>
+              <p className='text-sm text-white text-center'>I agree to paybridge's <a href="#" className='text-[#FCC003]'>terms of service</a> and <a href="#" className='text-[#FCC003]'> Privacy policy</a></p>
+            </div>
             <SocialAuthButtons />
           </form>
         )}

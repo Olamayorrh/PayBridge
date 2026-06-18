@@ -44,7 +44,7 @@ const Hero = () => {
   }, [images.length]);
 
   return (
-    <section className="mt-[2%] md:mt-[8%] mx-auto w-full min-h-100vh bg-[#151827] relative pb-3">
+    <section className="mt-[2%] md:mt-[8%] mx-auto w-full min-h-screen bg-[#151827] relative pb-3">
       <div className="flex flex-col md:flex-row">
         <motion.div
           initial={{ x: -100, opacity: 0 }}
