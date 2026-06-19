@@ -1,12 +1,11 @@
-//Escrow/src/test-user.js
-const { PrismaClient } = require('../generated/prisma');
-console.log('Before Prisma');
+require('dotenv').config();
+
+const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
-console.log('After Prisma');
 
 async function main() {
-  console.log('Inside main');
+
   const user = await prisma.user.create({
     data: {
       firstName: "Charity",
