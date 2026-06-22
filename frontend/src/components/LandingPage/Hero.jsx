@@ -1,39 +1,9 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import image1 from '../../assets/images/escrow1.png';
-import image2 from '../../assets/images/escrow2.jpg';
-import image3 from '../../assets/images/escrow3.png';
-
-import image5 from '../../assets/images/security1.jpg';
-import image6 from '../../assets/images/security2.jpg';
-
+import { images } from '../../data.jsx';
 
 const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  const images = [
-    {
-      id: 1,
-      img: image1,
-    },
-    {
-      id: 2,
-      img: image2,
-    },
-    {
-      id: 3,
-      img: image3,
-    },
-
-    {
-      id: 5,
-      img: image5,
-    },
-    {
-      id: 6,
-      img: image6,
-    },
-  ];
 
   useEffect(() => {
     const autoplay = setInterval(() => {
@@ -41,11 +11,11 @@ const Hero = () => {
     }, 3000);
 
     return () => clearInterval(autoplay);
-  }, [images.length]);
+  }, []);
 
   return (
-    <section className="mt-[2%] md:mt-[8%] mx-auto w-full min-h-100vh bg-[#151827] relative pb-3">
-      <div className="flex flex-col md:flex-row">
+    <section className="mt-[2%] md:mt-[8%] mx-auto w-full min-h-screen bg-[#151827] relative pb-3 md:px-5">
+      <div className="flex flex-col md:flex-row items-center">
         <motion.div
           initial={{ x: -100, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
@@ -57,37 +27,41 @@ const Hero = () => {
             ease: 'easeIn',
             duration: 1,
           }}
-          className="w-full md:w-[50%] p-3 md:mx-auto"
+          className="w-full md:w-[50%] p-4 md:mx-auto"
         >
           <div>
-            <h1 className="text-[1.2rem] md:text-2xl lg:text-2xl font-medium leading-normal p-2 max-w-[95%]">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-[6.0rem] font-extrabold tracking-tight leading-tight p-2 max-w-[95%]">
               Secure Every <span className="text-amber-300">Deal</span> <br />
               With PayBridge
             </h1>
           </div>
-          <div className="px-2 max-w-full my-2 text-[0.8rem] xl:text-[1.0rem]">
+          <div className="px-2 max-w-full my-2 text-sm md:text-base lg:text-lg text-gray-300 2xl:text-[2.5rem] 2xl:mb-[4.0rem]">
             <p>
               The ultimate escrow platform for social commerce. We hold the money until the product
               is delivered, ensuring both buyers and sellers are 100% protected.
             </p>
           </div>
-          <div className=" p-2 flex gap-2 text-[0.8rem] xl:text-[1.0rem]">
-            <button className="border p-1 rounded">Google play</button>
-            <button className="border p-1 rounded">App store</button>
+          <div className="p-2 flex gap-3 text-sm md:text-base 2xl:text-[2.5rem] 2xl:gap-[3.5rem]">
+            <button className="border px-3 py-1.5 rounded-lg hover:bg-white hover:text-black transition-colors duration-200 cursor-pointer">
+              Google play
+            </button>
+            <button className="border px-3 py-1.5 rounded-lg hover:bg-white hover:text-black transition-colors duration-200 cursor-pointer">
+              App store
+            </button>
           </div>
 
-          <div className="mt-4 md:mt-8 my-8 flex flex-wrap items-center justify-around sm:justify-start gap-4 sm:gap-[2.0rem] p-2 text-[0.8rem]">
-            <div className="flex flex-col items-center">
-              <p className="font-medium md:text-3xl xl:text-[1.5rem]">$20M</p>
-              <p className="xl:text-[0.7rem]">Payment Secured</p>
+          <div className="mt-6 md:mt-8 my-8 flex flex-wrap items-center justify-around md:justify-start gap-6 2xl:gap-[4rem] p-2">
+            <div className="flex flex-col items-center md:items-center">
+              <p className="text-2xl md:text-3xl lg:text-4xl font-bold 2xl:text-[4.0rem]">$20M</p>
+              <p className="text-xs md:text-sm text-gray-400 2xl:text-[2rem]">Payment Secured</p>
             </div>
-            <div className="flex flex-col items-center">
-              <p className="font-medium md:text-3xl xl:text-[1.5rem]">1M+</p>
-              <p className="xl:text-[0.7rem]">Active Users</p>
+            <div className="flex flex-col items-center md:items-center">
+              <p className="text-2xl md:text-3xl lg:text-4xl font-bold 2xl:text-[4.0rem]">1M+</p>
+              <p className="text-xs md:text-sm text-gray-400 2xl:text-[2rem]">Active Users</p>
             </div>
-            <div className="flex flex-col items-center">
-              <p className="font-medium md:text-3xl xl:text-[1.5rem]">0</p>
-              <p className="xl:text-[0.7rem]">Fixed Cases</p>
+            <div className="flex flex-col items-center md:items-center">
+              <p className="text-2xl md:text-3xl lg:text-4xl font-bold 2xl:text-[4.0rem]">0</p>
+              <p className="text-xs md:text-sm text-gray-400 2xl:text-[2rem]">Fixed Cases</p>
             </div>
           </div>
         </motion.div>
@@ -103,14 +77,14 @@ const Hero = () => {
             ease: 'easeIn',
             duration: 1,
           }}
-          className="relative w-full h-[350px] sm:h-[450px] md:h-auto md:w-[50%] xl:h-auto xl:w-[40%] flex"
+          className="relative w-full h-[350px] md:h-[500px] lg:h-[600px] md:w-[50%] flex"
         >
           {images.map((val, index) => (
             <img
               key={index}
               src={val.img}
               alt={`slide-${val.id}`}
-              className={`absolute w-full border-amber-300 h-full md:w-[92%] md:h-[90%] rounded-2xl object-cover transition-opacity duration-1000 ease-in-out transform ${
+              className={`absolute w-full border-amber-300 h-full md:w-[92%] md:h-[90%] 2xl:h-[90%] 2xl:w-[90%] rounded-2xl object-cover transition-opacity duration-1000 ease-in-out transform ${
                 index === currentIndex ? 'opacity-100' : 'opacity-0'
               }`}
             />
@@ -121,7 +95,7 @@ const Hero = () => {
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
-                className={`h-1.5 rounded-full transition-all duration-500 ${
+                className={`h-1.5 rounded-full transition-all duration-500 cursor-pointer ${
                   index === currentIndex ? 'w-12 bg-white' : 'w-3 bg-white/40 hover:bg-white/60'
                 }`}
               />
