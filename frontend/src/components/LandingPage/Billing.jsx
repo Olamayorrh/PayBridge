@@ -1,79 +1,92 @@
-import img from "../../assets/images/escrow_img.png"
+import img from '../../assets/images/escrow_img.png';
 
 const Billing = () => {
   return (
-    <div className=" pt-[3%] p-3 w-full md:flex md:flex-col items-center ">
-      <div className="flex flex-col items-center">
-        <h1 className="text-[1.0rem] font-medium md:text-[1.5rem] xl:text-[2.0rem]">Billing</h1>
-        <p className="text-[0.8rem] xl:text-[1.2rem]">
+    <div className="pt-[5%] p-4 w-full flex flex-col items-center">
+      <div className="flex flex-col items-center text-center ">
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#151827] 2xl:text-[4rem]">
+          Billing
+        </h1>
+        <p className="text-sm md:text-base text-gray-500 mt-2 2xl:text-[2rem]">
           One straightforward fee per transaction, designed to scale with your needs.
         </p>
       </div>
 
-      <div className="md:flex gap-[1.0rem] pt-[2%] my-[2.0rem] p-3 justify-center ">
-        <div className="w-full md:w-[30%] shadow-2xl md:flex md:flex-col rounded-2xl transition-all duration-300 ease-in-out hover:border-4 hover:border-amber-400">
-          <div className="w-full md:w-[100%]  p-2">
-            <div className=" m-[5%] p-3">
-              <div className="my-2 ">
-                <h1 className="text-[0.9rem] md:text-[1.2rem] font-bold">
+      <div className="flex flex-col md:flex-row gap-6 pt-[3%] my-[2.0rem] p-3 justify-center  w-full ">
+        {/* Card 1 */}
+        <div className="w-full md:w-[33%] 2xl:w-[30%] shadow-2xl flex flex-col rounded-2xl bg-white border-2 2xl:p-[4rem] border-transparent transition-all duration-300 ease-in-out hover:border-amber-400 hover:shadow-xl">
+          <div className="w-full p-4 flex-1">
+            <div className="m-2">
+              <div className="my-2">
+                <h1 className="text-base md:text-lg lg:text-xl font-bold text-[#151827] 2xl:text-[2rem]">
                   Secure Escrow Protection
                 </h1>
-                <p className="text-[0.7rem]">Every transaction is protected from start to finish</p>
+                <p className="text-xs md:text-sm text-gray-500 mt-1 2xl:text-[1.5rem] 2xl:mb-[3.0rem]">
+                  Every transaction is protected from start to finish
+                </p>
               </div>
 
-              <ul className="list-disc list-inside mt-4 text-[0.7rem] md:text-[0.75rem]">
-                <li className="my-3">Funds held securely</li>
-                <li className="my-3">Buyer & seller protection</li>
-                <li className="my-3">Transparent transaction tracking</li>
+              <ul className="list-disc list-inside mt-4 text-xs md:text-sm text-gray-600 space-y-2 2xl:text-[2rem]">
+                <li className="mb-2">Funds held securely</li>
+                <li className="mb-2">Buyer & seller protection</li>
+                <li className="mb-2">Transparent transaction tracking</li>
               </ul>
             </div>
           </div>
-          <div className="px-[1.0rem] mb-[5%] mt-auto text-[0.7rem] md:text-[1.1rem] font-bold">
-            <button className="w-full shadow-md border rounded-full p-2 mb-2 md:mb-0">
+          <div className="px-6 pb-6 mt-auto text-sm md:text-base 2xl:text-[2rem] font-bold">
+            <button className="w-full shadow-md border rounded-full p-2.5 hover:bg-amber-400 hover:text-black transition-colors duration-200 cursor-pointer">
               Learn More
             </button>
           </div>
         </div>
 
-        <div className="w-full md:w-[30%] rounded-2xl p-2 bg-amber-400 pt-[1.5%] transition-all duration-300 ease-in-out hover:border hover:border-amber-400">
-          <p className="text-center mx-3 mb-2 text-white text-[1.0rem] md:text-[1.2rem]">
+        {/* Card 2 */}
+        <div className="w-full md:w-[33%] 2xl:w-[30%] rounded-2xl p-2 bg-amber-400 flex flex-col border-2 border-transparent transition-all duration-300 ease-in-out hover:border-amber-500 hover:shadow-xl">
+          <p className="text-center py-2 font-bold text-[#151827] text-sm md:text-base lg:text-lg 2xl:text-[2rem]">
             Fee Per Transaction
           </p>
-          <div className="  md:flex-col w-[100%] shadow-2xl rounded-2xl bg-white xl:pb-1">
-            <div className="w-[100%]  p-2 ">
-              <div className="w-full md:w-[100%] ">
-                <div className=" m-[5%] p-3">
-                  <img src={img} alt="Escrow Image" />
-                  <div>
-                    <h1 className="text-[0.8rem] md:text-[0.9rem] font-medium my-2">
-                      Pay Only When You Transact
-                    </h1>
-                    <p className="my-2 text-[0.9rem] md:text-[0.9rem] font-medium">Pay 5%</p>
-                    <ul className="list-disc list-inside mt-4 text-[0.7rem] md:text-[0.75rem] ">
-                      <li>Per successful transaction</li>
-                      <li>No setup fees</li>
-                      <li>No monthly subscriptions</li>
-                      <li>No maintenance fees</li>
-                    </ul>
-                  </div>
+          <div className="flex flex-col flex-1 w-full shadow-2xl rounded-xl bg-white p-4 2xl:p-[4rem]">
+            <div className="w-full flex-1">
+              <div className="m-2">
+                <img
+                  src={img}
+                  alt="Escrow Image"
+                  className="mx-auto max-h-[140px] object-contain"
+                />
+                <div className="mt-4">
+                  <h1 className="text-sm md:text-base font-bold text-[#151827] 2xl:text-[1.5rem]">
+                    Pay Only When You Transact
+                  </h1>
+                  <p className="my-2 text-2xl md:text-3xl font-extrabold text-amber-500">Pay 5%</p>
+                  <ul className="list-disc list-inside text-xs md:text-sm text-gray-600 space-y-1 2xl:text-[2rem]">
+                    <li>Per successful transaction</li>
+                    <li>No setup fees</li>
+                    <li>No monthly subscriptions</li>
+                    <li>No maintenance fees</li>
+                  </ul>
                 </div>
               </div>
             </div>
-            <div className="m-[5%] mt-auto md:mb-[5%] text-[0.7rem] md:text-[0.8rem] xl:text-[1.2rem] font-bold ">
-              <button className="shadow-md rounded-full w-full p-2 border mb-2 md:mb-0 ">
+            <div className="px-2 pt-4 mt-auto text-sm md:text-base font-bold 2xl:text-[2rem]">
+              <button className="shadow-md rounded-full w-full p-2.5 bg-amber-400 text-black border border-amber-500 hover:bg-amber-500 transition-colors duration-200 cursor-pointer">
                 Start a Secure Transaction
               </button>
             </div>
           </div>
         </div>
 
-        <div className="w-full md:w-[30%] flex flex-col shadow-2xl rounded-2xl transition-all duration-300 ease-in-out hover:border-2 hover:border-amber-400">
-          <div className="w-[100%] p-2">
-            <div className="m-[5%] p-3">
+        {/* Card 3 */}
+        <div className="w-full md:w-[33%] 2xl:w-[30%] flex flex-col shadow-2xl 2xl:p-[4rem] rounded-2xl bg-white border-2 border-transparent transition-all duration-300 ease-in-out hover:border-amber-400 hover:shadow-xl">
+          <div className="w-full p-4 flex-1">
+            <div className="m-2">
               <div>
-                <h1 className="text-[0.9rem] md:text-[1.3rem] font-medium my-2">Fair Fee Cap</h1>
-                <p className="text-[0.7rem]">Large transactions shouldn't mean unlimited fees.</p>
-                <ul className="list-disc list-inside mt-4 text-[0.7rem]">
+                <h1 className="text-base md:text-lg lg:text-xl font-bold text-[#151827] 2xl:text-[2rem]">
+                  Fair Fee Cap
+                </h1>
+                <p className="text-xs md:text-sm text-gray-500 mt-1 2xl:text-[1.5rem]">
+                  Large transactions shouldn't mean unlimited fees.
+                </p>
+                <ul className="list-disc list-inside mt-4 text-xs md:text-sm text-gray-600 space-y-2 2xl:text-[2rem]">
                   <li>Maximum fee cap applies</li>
                   <li>Predictable transaction costs</li>
                   <li>Ideal for high-value deals</li>
@@ -81,8 +94,10 @@ const Billing = () => {
               </div>
             </div>
           </div>
-          <div className="m-[5%] mt-auto mb-[5%] text-[0.7rem] md:text-[1.1rem] font-bold">
-            <button className="shadow-md rounded-full w-full p-2 border">Learn More</button>
+          <div className="px-6 pb-6 mt-auto text-sm md:text-base font-bold 2xl:text-[2rem]">
+            <button className="shadow-md rounded-full w-full p-2.5 border hover:bg-amber-400 hover:text-black transition-colors duration-200 cursor-pointer">
+              Learn More
+            </button>
           </div>
         </div>
       </div>
