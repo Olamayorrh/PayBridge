@@ -1,3 +1,4 @@
+//Escrow/src/dtos/user.dto.js
 class CreateUserDTO {
   constructor({ firstName, lastName, email, phone, password, role }) {
     this.firstName = firstName;

@@ -1,11 +1,25 @@
+//escrow/src/validators/user.validator.js
 const Joi = require('joi');
+
+// Strong password rule (single source of truth)
+const passwordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,30}$/;
 
 const createUserSchema = Joi.object({
   firstName: Joi.string().min(2).required(),
   lastName: Joi.string().min(2).required(),
   email: Joi.string().email().required(),
   phone: Joi.string().optional(),
-  password: Joi.string().min(6).required(),
+
+  // UPDATED: enforce strong password here
+  password: Joi.string()
+    .pattern(passwordRegex)
+    .required()
+    .messages({
+      'string.pattern.base':
+        'Password must be 8-30 chars and include uppercase, lowercase, number, and special character',
+    }),
+
   role: Joi.string().valid('BUYER', 'SELLER', 'ADMIN'),
 });
 
@@ -13,11 +27,20 @@ const updateUserSchema = Joi.object({
   firstName: Joi.string().min(2),
   lastName: Joi.string().min(2),
   phone: Joi.string(),
+
+  // OPTIONAL: if password update is allowed later
+  password: Joi.string().pattern(passwordRegex),
+});
+
+const loginUserSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().required(),
 });
 
 module.exports = {
   createUserSchema,
   updateUserSchema,
+  loginUserSchema,
 };
 
 /*This file defines validation schemas for user-related operations using the Joi library in a Node.js application.
