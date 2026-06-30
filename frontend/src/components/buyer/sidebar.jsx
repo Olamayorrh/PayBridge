@@ -2,6 +2,7 @@ import {
   RiCloseLine,
   RiDashboardLine,
   RiExchangeDollarLine,
+  RiFileWarningLine,
   RiSettings3Line,
   RiMenuFold2Line,
   RiMenuFoldLine
@@ -12,6 +13,7 @@ import { cn } from '../../utils/common';
 const navItems = [
   { label: 'Dashboard', icon: RiDashboardLine, to: '/buyer' },
   { label: 'Transactions', icon: RiExchangeDollarLine, to: '/buyer/transactions' },
+  { label: 'Disputes', icon: RiFileWarningLine, to: '/buyer/disputes' },
   { label: 'Settings', icon: RiSettings3Line, to: '/buyer/settings' },
 ];
 

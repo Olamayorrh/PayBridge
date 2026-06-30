@@ -5,11 +5,14 @@ import { PaymentCodeCard } from '../../components/buyer/dashboard/payment-code-c
 import { RecentTransactionsCard } from '../../components/buyer/dashboard/recent-transactions-card';
 import { SpendingChartCard } from '../../components/buyer/dashboard/spending-chart-card';
 import { TotalSpentTodayCard } from '../../components/buyer/dashboard/total-spent-today-card';
+import { useCurrentUser } from '../../api/hooks';
 
 export function BuyerDashBoard() {
+  const { user } = useCurrentUser();
+
   return (
     <div className="mx-auto flex max-w-7xl flex-col gap-5">
-      <DashboardHeader />
+      <DashboardHeader firstName={user?.firstName} />
 
       <section className="grid gap-5 md:grid-cols-2">
         <DashboardStatCard

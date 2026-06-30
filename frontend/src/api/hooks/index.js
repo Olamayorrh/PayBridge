@@ -8,4 +8,4 @@ export { useRegister, useLogin, useRefreshToken, useLogout } from './auth/useAut
 
 export { usersKeys } from './users/user.keys';
 export { useUsers, useUser, useUpdateUser, useDeleteUser } from './users/useUser';
-
+export { useCurrentUser, getStoredAuthUser } from './users/useCurrentUser';
