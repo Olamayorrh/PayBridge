@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// ADD YOUR USER MODEL HERE
+model User {
+  id              String     @id @default(uuid())
+  firstName       String
+  lastName        String
+  email           String     @unique
+  phone           String?    @unique
+  password        String
+  role            UserRole   @default(BUYER)
+  status          UserStatus @default(ACTIVE)
+  isEmailVerified Boolean    @default(false)
+  lastLoginAt     DateTime?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+}
+
+model try_prisma {
+  try_id     Int       @id @default(autoincrement())
+  name       String?   @db.VarChar(50)
+  reason     String?   @db.VarChar(255)
+  created_at DateTime? @default(now()) @db.Timestamp(0)
+}
+
+model proveAppIsConnected {
+  connect_id  Int       @id @default(autoincrement())
+  is_writting Boolean?  @default(true)
+  created_at  DateTime? @default(now()) @db.Timestamp(0)
+}
+
+enum UserRole {
+  BUYER
+  SELLER
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  DELETED
+}
