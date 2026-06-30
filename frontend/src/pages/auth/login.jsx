@@ -1,5 +1,4 @@
 import { Formik } from 'formik';
-import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
 import { RiLockPasswordLine, RiMailLine } from '@remixicon/react';
 import { AuthLayout } from '../../components/auth/auth-layout';
@@ -7,14 +6,33 @@ import { SocialAuthButtons } from '../../components/auth/social-auth-buttons';
 import { Input } from '../../ui/input';
 import { Button } from '../../ui/button';
 import { useLogin } from '../../api/hooks';
-
-const loginSchema = Yup.object({
-  loginEmail: Yup.string().email('Enter a valid email').required('Email is required'),
-  password: Yup.string().required('Password is required'),
-});
+import { loginSchema } from '../../validations/auth';
 
 export function Login() {
   const loginMutation = useLogin();
+
+  const handleLogin = async (values, { setSubmitting, setStatus }) => {
+    setStatus(null);
+
+    try {
+      await loginMutation.mutateAsync({
+        email: values.loginEmail,
+        password: values.password,
+      });
+
+      setStatus({
+        type: 'success',
+        message: 'Login successful.',
+      });
+    } catch (error) {
+      setStatus({
+        type: 'error',
+        message: error.response?.data?.message || 'Unable to log in',
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <AuthLayout activeForm="login" title="Welcome Back">
@@ -24,28 +42,7 @@ export function Login() {
           password: '',
         }}
         validationSchema={loginSchema}
-        onSubmit={async (values, { setSubmitting, setStatus }) => {
-          setStatus(null);
-
-          try {
-            await loginMutation.mutateAsync({
-              email: values.loginEmail,
-              password: values.password,
-            });
-
-            setStatus({
-              type: 'success',
-              message: 'Login successful.',
-            });
-          } catch (error) {
-            setStatus({
-              type: 'error',
-              message: error.response?.data?.message || 'Unable to log in',
-            });
-          } finally {
-            setSubmitting(false);
-          }
-        }}
+        onSubmit={handleLogin}
       >
         {({
           values,
