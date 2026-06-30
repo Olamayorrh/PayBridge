@@ -17,7 +17,7 @@ export function Sidebar() {
           <img className="size-11" src="/temporary-logo.png" alt="PayBridge logo" />
           <div>
             <p className="text-xl font-black leading-none tracking-wide">PayBridge</p>
-            <p className="text-xs hidden font-bold uppercase text-coarse-wool/45">Buyer</p>
+            <p className="text-xs hidden font-bold uppercase text-coarse-wool/45">Seller</p>
           </div>
         </div>
 

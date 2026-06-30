@@ -62,7 +62,7 @@ const SideBar = () => {
                   <NavLink
                     to={val.to}
                     onClick={() => setSidebarOpen(false)}
-                    end={val.to === '/Buyer'}
+                    end={val.to === '/seller'}
                     className={({ isActive }) =>
                       `flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer font-medium text-sm transition-all duration-200 ${
                         isActive

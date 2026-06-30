@@ -167,27 +167,27 @@ export const recentReceipts = [
 
 export const Paths = [
   {
-    to: '/Buyer',
+    to: '/seller',
     icons: <RiHome4Line />,
     label: 'DASHBOARD',
   },
   {
-    to: '/Buyer/escrows',
+    to: '/seller/escrows',
     icons: <RiShieldCheckLine />,
     label: 'ESCROWS',
   },
   {
-    to: '/Buyer/transactions',
+    to: '/seller/transactions',
     icons: <RiArrowLeftRightFill />,
     label: 'TRANSACTIONS',
   },
   {
-    to: '/Buyer/wallet',
+    to: '/seller/wallet',
     icons: <RiWalletFill />,
     label: 'WALLET',
   },
   {
-    to: '/Buyer/profile',
+    to: '/seller/profile',
     icons: <RiUserLine />,
     label: 'PROFILE',
   },
