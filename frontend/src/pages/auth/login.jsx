@@ -6,7 +6,7 @@ import { AuthLayout } from '../../components/auth/auth-layout';
 import { SocialAuthButtons } from '../../components/auth/social-auth-buttons';
 import { Input } from '../../ui/input';
 import { Button } from '../../ui/button';
-import api from '../../api/axios';
+import { useLogin } from '../../api/hooks';
 
 const loginSchema = Yup.object({
   loginEmail: Yup.string().email('Enter a valid email').required('Email is required'),
@@ -14,6 +14,8 @@ const loginSchema = Yup.object({
 });
 
 export function Login() {
+  const loginMutation = useLogin();
+
   return (
     <AuthLayout activeForm="login" title="Welcome Back">
       <Formik
@@ -26,15 +28,10 @@ export function Login() {
           setStatus(null);
 
           try {
-            const response = await api.post('/auth/login', {
+            await loginMutation.mutateAsync({
               email: values.loginEmail,
               password: values.password,
             });
-            const { accessToken, refreshToken, user } = response.data.data;
-
-            localStorage.setItem('accessToken', accessToken);
-            localStorage.setItem('refreshToken', refreshToken);
-            localStorage.setItem('authUser', JSON.stringify(user));
 
             setStatus({
               type: 'success',

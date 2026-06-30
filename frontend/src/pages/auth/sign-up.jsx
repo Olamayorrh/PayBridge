@@ -14,7 +14,7 @@ import { AuthLayout } from '../../components/auth/auth-layout';
 import { SocialAuthButtons } from '../../components/auth/social-auth-buttons';
 import { Input } from '../../ui/input';
 import { Button } from '../../ui/button';
-import api from '../../api/axios';
+import { useRegister } from '../../api/hooks';
 
 const signUpSchema = Yup.object({
   firstName: Yup.string()
@@ -53,6 +53,8 @@ const signUpSchema = Yup.object({
 });
 
 export function SignUp() {
+  const registerMutation = useRegister();
+
   return (
     <AuthLayout activeForm="sign-up" title="Create an Account">
       <Formik
@@ -73,7 +75,7 @@ export function SignUp() {
           setStatus(null);
 
           try {
-            await api.post('/auth/register', {
+            await registerMutation.mutateAsync({
               firstName: values.firstName,
               lastName: values.lastName,
               email: values.signupEmail,

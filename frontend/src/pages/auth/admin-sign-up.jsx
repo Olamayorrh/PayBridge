@@ -14,7 +14,7 @@ import { SocialAuthButtons } from '../../components/auth/social-auth-buttons';
 import { Input } from '../../ui/input';
 import { Button } from '../../ui/button';
 import { AdminAuthLayout } from '../../components/auth/admin-auth-layout';
-import api from '../../api/axios';
+import { useRegister } from '../../api/hooks';
 
 const signUpSchema = Yup.object({
   firstName: Yup.string()
@@ -41,6 +41,8 @@ const signUpSchema = Yup.object({
 });
 
 export function AdminSignUp() {
+  const registerMutation = useRegister();
+
   return (
     <AdminAuthLayout activeForm="sign-up" title="Create an Account">
       <Formik
@@ -57,7 +59,7 @@ export function AdminSignUp() {
           setStatus(null);
 
           try {
-            await api.post('/auth/register', {
+            await registerMutation.mutateAsync({
               firstName: values.firstName,
               lastName: values.lastName,
               email: values.signupEmail,
