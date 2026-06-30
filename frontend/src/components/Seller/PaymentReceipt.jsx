@@ -7,7 +7,7 @@ const PaymentReceipt = () => {
   return (
     <div
       className="fixed inset-0 z-50 flex justify-center items-start overflow-y-auto p-4 md:p-10 bg-slate-950/40 backdrop-blur-md"
-      onClick={() => navigate('/Buyer')}
+      onClick={() => navigate('/seller')}
     >
       <div
         className="w-full max-w-lg shadow-2xl rounded-2xl pb-[3.0rem] bg-white my-auto animate-in fade-in zoom-in-95 duration-200"
@@ -19,7 +19,7 @@ const PaymentReceipt = () => {
             Generate A Secure Escrow link For Your Item
           </h3>
           <button
-            onClick={() => navigate('/Buyer')}
+            onClick={() => navigate('/seller')}
             type="button"
             className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition-colors cursor-pointer"
           >
@@ -74,7 +74,7 @@ const PaymentReceipt = () => {
           <div className="py-2 border-t flex justify-end gap-2 px-[1.5rem] mt-4">
             <button
               type="button"
-              onClick={() => navigate('/Buyer')}
+              onClick={() => navigate('/seller')}
               className="bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium px-4 py-2 rounded-lg cursor-pointer transition-colors"
             >
               Cancel

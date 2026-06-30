@@ -1,5 +1,5 @@
 import { Formik } from 'formik';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { RiLockPasswordLine, RiMailLine } from '@remixicon/react';
 import { AuthLayout } from '../../components/auth/auth-layout';
 import { SocialAuthButtons } from '../../components/auth/social-auth-buttons';
@@ -9,21 +9,38 @@ import { useLogin } from '../../api/hooks';
 import { loginSchema } from '../../validations/auth';
 
 export function Login() {
+  const navigate = useNavigate();
   const loginMutation = useLogin();
 
   const handleLogin = async (values, { setSubmitting, setStatus }) => {
     setStatus(null);
 
     try {
-      await loginMutation.mutateAsync({
+      const session = await loginMutation.mutateAsync({
         email: values.loginEmail,
         password: values.password,
       });
+
+      const role = session?.user?.role?.toUpperCase();
+      const redirectPathByRole = {
+        BUYER: '/buyer',
+        SELLER: '/seller',
+      };
+      const redirectPath = redirectPathByRole[role];
+
+      if (!redirectPath) {
+        setStatus({
+          type: 'error',
+          message: 'Your account role is not supported yet.',
+        });
+        return;
+      }
 
       setStatus({
         type: 'success',
         message: 'Login successful.',
       });
+      navigate(redirectPath, { replace: true });
     } catch (error) {
       setStatus({
         type: 'error',

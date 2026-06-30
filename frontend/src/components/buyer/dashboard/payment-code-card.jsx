@@ -7,7 +7,7 @@ export function PaymentCodeCard() {
         <div className="flex size-14 items-center justify-center rounded-lg bg-white text-[#151827]">
           <RiSecurePaymentLine size={28} />
         </div>
-        <h2 className="mt-8 text-2xl font-black leading-tight">Input buyer code to make payment</h2>
+        <h2 className="mt-8 text-2xl font-black leading-tight">Input seller code to make payment</h2>
         <p className="mt-3 text-sm leading-6 text-white/60">
           Enter the transaction code shared by the seller to continue with escrow payment.
         </p>

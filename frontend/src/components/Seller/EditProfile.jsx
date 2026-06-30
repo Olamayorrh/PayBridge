@@ -11,7 +11,7 @@ const EditProfile = () => {
     <div className="w-full max-w-2xl mx-auto flex flex-col gap-6">
       <div className="flex items-center gap-3">
         <button
-          onClick={() => navigate('/Buyer/profile')}
+          onClick={() => navigate('/seller/profile')}
           className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-all shadow-sm cursor-pointer"
         >
           <RiArrowLeftLine size={18} />
@@ -164,7 +164,7 @@ const EditProfile = () => {
           <div className="border-t border-gray-100 pt-6 flex flex-col sm:flex-row justify-end gap-3">
             <button
               type="button"
-              onClick={() => navigate('/Buyer/profile')}
+              onClick={() => navigate('/seller/profile')}
               className="w-full sm:w-auto px-6 py-3 rounded-xl text-sm font-bold transition-all duration-200 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 cursor-pointer"
             >
               Cancel

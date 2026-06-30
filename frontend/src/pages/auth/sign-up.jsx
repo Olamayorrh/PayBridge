@@ -1,5 +1,5 @@
 import { Formik } from 'formik';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   RiArrowRightLine,
   RiBuildingLine,
@@ -17,6 +17,7 @@ import { useRegister } from '../../api/hooks';
 import { signUpSchema } from '../../validations/auth';
 
 export function SignUp() {
+  const navigate = useNavigate();
   const registerMutation = useRegister();
 
   const handleSignUp = async (values, { setSubmitting, setStatus }) => {
@@ -36,6 +37,7 @@ export function SignUp() {
         type: 'success',
         message: 'Account created successfully. You can now log in.',
       });
+      navigate('/login', { replace: true });
     } catch (error) {
       setStatus({
         type: 'error',

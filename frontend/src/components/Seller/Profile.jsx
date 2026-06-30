@@ -31,7 +31,7 @@ const Profile = () => {
           My Profile
         </h1>
         <Link
-          to="/Buyer/profile/edit"
+          to="/seller/profile/edit"
           className="px-4 py-2 bg-white border border-slate-200 text-slate-700 text-sm font-bold rounded-xl shadow-sm hover:bg-slate-50 flex items-center gap-2 transition-all"
         >
           <RiUserLine size={16} />

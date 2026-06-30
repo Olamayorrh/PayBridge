@@ -6,9 +6,9 @@ import { Link, useLocation } from 'react-router-dom';
 const TopNav = () => {
   const location = useLocation();
   const isDashboard =
-    location.pathname === '/Buyer' ||
+    location.pathname === '/seller' ||
     location.pathname === '/dashboard' ||
-    location.pathname === '/Buyer/';
+    location.pathname === '/seller/';
 
   return (
     <div className="w-full flex flex-col mb-6">

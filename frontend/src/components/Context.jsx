@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 export const usercontext = createContext();
@@ -20,13 +20,7 @@ const Context = ({ children }) => {
     return 'Dashboard';
   };
 
-  //
-  const [newstate, setNewState] = useState('');
   const [activeItem, setActiveItem] = useState('dashboard');
-
-  useEffect(() => {
-    setNewState(name);
-  }, []);
 
   // dasboard table(copy)
   const [copiedId, setCopiedId] = useState(null);
@@ -65,7 +59,7 @@ const Context = ({ children }) => {
       setSaveSuccess(true);
       setTimeout(() => {
         setSaveSuccess(false);
-        navigate('/Buyer/profile');
+        navigate('/seller/profile');
       }, 1500);
     }, 1200);
   };
@@ -82,24 +76,6 @@ const Context = ({ children }) => {
   const showToast = (msg) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 3000);
-  };
-
-  const handleShip = (id) => {
-    setEscrows((prev) =>
-      prev.map((escrow) =>
-        escrow.id === id ? { ...escrow, step: 2, status: 'Shipped (In Transit)' } : escrow
-      )
-    );
-    showToast(`Marked transaction ${id} as Shipped!`);
-  };
-
-  const handleResolveDispute = (id) => {
-    setEscrows((prev) =>
-      prev.map((escrow) =>
-        escrow.id === id ? { ...escrow, step: 4, status: 'Completed', isDisputed: false } : escrow
-      )
-    );
-    showToast(`Dispute for ${id} has been resolved. Funds released!`);
   };
 
   const handleMessage = (buyerName) => {
@@ -158,8 +134,6 @@ const Context = ({ children }) => {
         expandedEscrowId,
         toggleExpand,
         showToast,
-        handleShip,
-        handleResolveDispute,
         handleMessage,
         location,
         getPageTitle,

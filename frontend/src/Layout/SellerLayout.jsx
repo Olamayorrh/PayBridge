@@ -3,12 +3,12 @@ import SideBar from '../components/Seller/SideBar';
 import { Outlet, useLocation } from 'react-router-dom';
 import Header from '../components/Seller/Header';
 
-const BuyerLayout = () => {
+const SellerLayout = () => {
   const location = useLocation();
   const isDashboard =
-    location.pathname === '/Buyer' ||
+    location.pathname === '/seller' ||
     location.pathname === '/dashboard' ||
-    location.pathname === '/Buyer/';
+    location.pathname === '/seller/';
 
   return (
     <div className="flex w-full min-h-screen bg-slate-50 overflow-x-hidden">
@@ -28,4 +28,4 @@ const BuyerLayout = () => {
   );
 };
 
-export default BuyerLayout;
+export default SellerLayout;

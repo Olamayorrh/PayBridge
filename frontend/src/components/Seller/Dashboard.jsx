@@ -39,7 +39,7 @@ const Dashboard = () => {
               <span className="font-medium">Withdraw</span>
             </div>
             <Link
-              to="/Buyer/paymentReceipt"
+              to="/seller/paymentReceipt"
               className="bg-[#151827] text-white shadow-md hover:bg-slate-800 hover:shadow-lg flex justify-center items-center rounded-xl p-2 transition-all w-full sm:w-auto"
             >
               <RiAddLine className="mr-1" size={20} />
