@@ -3,13 +3,13 @@ import { Login } from '../../pages/auth/login';
 import { SignUp } from '../../pages/auth/sign-up';
 import { AdminLogin } from '../../pages/auth/admin-login';
 import { AdminSignUp } from '../../pages/auth/admin-sign-up';
-import { BuyerDashBoard } from '../../pages/Buyer/dashboard';
-import Landing from '../../pages/landing';
+import { BuyerDashBoard } from '../../pages/buyer/dashboard';
+import Landing from '../../pages/Landing';
 
 export function AppRoutes() {
   return (
     <Routes>
-       <Route path="/" element={<Landing />} />
+      <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/sign-up" element={<SignUp />} />
       <Route path="/admin-sign-up" element={<AdminSignUp />} />
