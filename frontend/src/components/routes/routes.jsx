@@ -17,6 +17,16 @@ import SellerEditProfile from '../Seller/EditProfile';
 import SellerSettings from '../Seller/Settings';
 import SellerPaymentReceipt from '../Seller/PaymentReceipt';
 import Landing from '../../pages/Landing';
+import Dashboard from '../Seller/Dashboard';
+import PaymentReceipt from '../Seller/PaymentReceipt';
+import Escrows from '../Seller/Escrows';
+import Transactions from '../Seller/Transactions';
+import Wallet from '../Seller/Wallet';
+import Profile from '../Seller/Profile';
+import EditProfile from '../Seller/EditProfile';
+import Settings from '../Seller/Settings';
+
+import SellerLayout from '../../Layout/SellerLayout';
 
 export function AppRoutes() {
   return (
@@ -32,15 +42,17 @@ export function AppRoutes() {
         <Route path="transactions" element={<BuyerTransactions />} />
         <Route path="settings" element={<BuyerSettings />} />
       </Route>
+      <Route path="/dashboard" element={<Dashboard />} />
+
       <Route path="/seller" element={<SellerLayout />}>
-        <Route index element={<SellerDashboard />} />
-        <Route path="escrows" element={<SellerEscrows />} />
-        <Route path="transactions" element={<SellerTransactions />} />
-        <Route path="wallet" element={<SellerWallet />} />
-        <Route path="profile" element={<SellerProfile />} />
-        <Route path="profile/edit" element={<SellerEditProfile />} />
-        <Route path="settings" element={<SellerSettings />} />
-        <Route path="paymentReceipt" element={<SellerPaymentReceipt />} />
+        <Route index element={<Dashboard />} />
+        <Route path="paymentReceipt" element={<PaymentReceipt />} />
+        <Route path="escrows" element={<Escrows />} />
+        <Route path="transactions" element={<Transactions />} />
+        <Route path="wallet" element={<Wallet />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="profile/edit" element={<EditProfile />} />
+        <Route path="settings" element={<Settings />} />
       </Route>
     </Routes>
   );
