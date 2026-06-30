@@ -21,7 +21,7 @@ export function PaymentCodeCard() {
         />
         <button
           type="button"
-          className="h-12 rounded-lg bg-white px-4 text-sm font-black text-[#151827] transition-colors hover:bg-the-bright-side"
+          className="h-12 rounded-lg bg-[#FCC003] px-4 text-sm font-black text-[#151827] transition-colors hover:bg-[#fcc20393]"
         >
           Make Payment
         </button>
