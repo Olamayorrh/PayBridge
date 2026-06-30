@@ -14,6 +14,7 @@ import { SocialAuthButtons } from '../../components/auth/social-auth-buttons';
 import { Input } from '../../ui/input';
 import { Button } from '../../ui/button';
 import { AdminAuthLayout } from '../../components/auth/admin-auth-layout';
+import api from '../../api/axios';
 
 const signUpSchema = Yup.object({
   firstName: Yup.string()
@@ -52,9 +53,31 @@ export function AdminSignUp() {
           confirmPassword: '',
         }}
         validationSchema={signUpSchema}
-        onSubmit={(values, { setSubmitting, setStatus }) => {
-          setStatus({ message: `Ready to create ${values.role} account.` });
-          setSubmitting(false);
+        onSubmit={async (values, { setSubmitting, setStatus }) => {
+          setStatus(null);
+
+          try {
+            await api.post('/auth/register', {
+              firstName: values.firstName,
+              lastName: values.lastName,
+              email: values.signupEmail,
+              phone: values.phoneNumber,
+              password: values.password,
+              role: 'ADMIN',
+            });
+
+            setStatus({
+              type: 'success',
+              message: 'Admin account created successfully. You can now log in.',
+            });
+          } catch (error) {
+            setStatus({
+              type: 'error',
+              message: error.response?.data?.message || 'Unable to create admin account',
+            });
+          } finally {
+            setSubmitting(false);
+          }
         }}
       >
         {({
@@ -158,7 +181,15 @@ export function AdminSignUp() {
                 error={errors.confirmPassword}
                 touched={touched.confirmPassword}
               />
-            {status?.message && <p className="text-sm text-the-bright-side">{status.message}</p>}
+            {status?.message && (
+              <p
+                className={`text-sm ${
+                  status.type === 'error' ? 'text-red-300' : 'text-the-bright-side'
+                }`}
+              >
+                {status.message}
+              </p>
+            )}
             <Button variant="primary" size="xl" disabled={isSubmitting}>
               Create Account
             </Button>

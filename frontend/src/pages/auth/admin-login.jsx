@@ -6,6 +6,7 @@ import { SocialAuthButtons } from '../../components/auth/social-auth-buttons';
 import { Input } from '../../ui/input';
 import { Button } from '../../ui/button';
 import { AdminAuthLayout } from '../../components/auth/admin-auth-layout';
+import api from '../../api/axios';
 
 const loginSchema = Yup.object({
   loginEmail: Yup.string().email('Enter a valid email').required('Email is required'),
@@ -21,9 +22,32 @@ export function AdminLogin() {
           password: '',
         }}
         validationSchema={loginSchema}
-        onSubmit={(values, { setSubmitting, setStatus }) => {
-          setStatus({ message: `Ready to log in ${values.loginEmail}.` });
-          setSubmitting(false);
+        onSubmit={async (values, { setSubmitting, setStatus }) => {
+          setStatus(null);
+
+          try {
+            const response = await api.post('/auth/login', {
+              email: values.loginEmail,
+              password: values.password,
+            });
+            const { accessToken, refreshToken, user } = response.data.data;
+
+            localStorage.setItem('accessToken', accessToken);
+            localStorage.setItem('refreshToken', refreshToken);
+            localStorage.setItem('authUser', JSON.stringify(user));
+
+            setStatus({
+              type: 'success',
+              message: 'Login successful.',
+            });
+          } catch (error) {
+            setStatus({
+              type: 'error',
+              message: error.response?.data?.message || 'Unable to log in',
+            });
+          } finally {
+            setSubmitting(false);
+          }
         }}
       >
         {({
@@ -68,7 +92,15 @@ export function AdminLogin() {
               error={errors.password}
               touched={touched.password}
             />
-            {status?.message && <p className="text-sm text-[#FCC003]">{status.message}</p>}
+            {status?.message && (
+              <p
+                className={`text-sm ${
+                  status.type === 'error' ? 'text-red-300' : 'text-[#FCC003]'
+                }`}
+              >
+                {status.message}
+              </p>
+            )}
             <Button variant="primary" size="xl" disabled={isSubmitting}>
               Log In
             </Button>

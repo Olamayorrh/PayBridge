@@ -73,7 +73,7 @@ export function SignUp() {
           setStatus(null);
 
           try {
-            await api.post('/users', {
+            await api.post('/auth/register', {
               firstName: values.firstName,
               lastName: values.lastName,
               email: values.signupEmail,
