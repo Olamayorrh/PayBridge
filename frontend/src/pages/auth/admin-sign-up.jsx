@@ -1,5 +1,4 @@
 import { Formik } from 'formik';
-import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
 import {
   RiArrowRightLine,
@@ -14,32 +13,39 @@ import { SocialAuthButtons } from '../../components/auth/social-auth-buttons';
 import { Input } from '../../ui/input';
 import { Button } from '../../ui/button';
 import { AdminAuthLayout } from '../../components/auth/admin-auth-layout';
-
-const signUpSchema = Yup.object({
-  firstName: Yup.string()
-    .min(2, 'First name must be at least 2 characters')
-    .max(50, 'First name must not be more than 50 characters')
-    .required('First name is required'),
-
-  lastName: Yup.string()
-    .min(2, 'Last name must be at least 2 characters')
-    .max(50, 'Last name must not be more than 50 characters')
-    .required('Last name is required'),
-
-  signupEmail: Yup.string().email('Enter a valid email').required('Email is required'),
-
-  phoneNumber: Yup.string().required('Phone number is required'),
-
-  password: Yup.string()
-    .min(8, 'Password must be at least 8 characters')
-    .required('Password is required'),
-
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password')], 'Passwords must match')
-    .required('Confirm your password'),
-});
+import { useRegister } from '../../api/hooks';
+import { adminSignUpSchema } from '../../validations/auth';
 
 export function AdminSignUp() {
+  const registerMutation = useRegister();
+
+  const handleSignUp = async (values, { setSubmitting, setStatus }) => {
+    setStatus(null);
+
+    try {
+      await registerMutation.mutateAsync({
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.signupEmail,
+        phone: values.phoneNumber,
+        password: values.password,
+        role: 'ADMIN',
+      });
+
+      setStatus({
+        type: 'success',
+        message: 'Admin account created successfully. You can now log in.',
+      });
+    } catch (error) {
+      setStatus({
+        type: 'error',
+        message: error.response?.data?.message || 'Unable to create admin account',
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <AdminAuthLayout activeForm="sign-up" title="Create an Account">
       <Formik
@@ -51,11 +57,8 @@ export function AdminSignUp() {
           password: '',
           confirmPassword: '',
         }}
-        validationSchema={signUpSchema}
-        onSubmit={(values, { setSubmitting, setStatus }) => {
-          setStatus({ message: `Ready to create ${values.role} account.` });
-          setSubmitting(false);
-        }}
+        validationSchema={adminSignUpSchema}
+        onSubmit={handleSignUp}
       >
         {({
           values,
@@ -158,7 +161,15 @@ export function AdminSignUp() {
                 error={errors.confirmPassword}
                 touched={touched.confirmPassword}
               />
-            {status?.message && <p className="text-sm text-the-bright-side">{status.message}</p>}
+            {status?.message && (
+              <p
+                className={`text-sm ${
+                  status.type === 'error' ? 'text-red-300' : 'text-the-bright-side'
+                }`}
+              >
+                {status.message}
+              </p>
+            )}
             <Button variant="primary" size="xl" disabled={isSubmitting}>
               Create Account
             </Button>

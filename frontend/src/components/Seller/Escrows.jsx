@@ -53,10 +53,26 @@ const Escrows = () => {
     expandedEscrowId,
     toggleExpand,
     showToast,
-    handleShip,
-    handleResolveDispute,
     handleMessage,
   } = useContext(usercontext);
+
+  const handleShip = (id) => {
+    setEscrows((prev) =>
+      prev.map((escrow) =>
+        escrow.id === id ? { ...escrow, step: 2, status: 'Shipped (In Transit)' } : escrow
+      )
+    );
+    showToast(`Marked transaction ${id} as Shipped!`);
+  };
+
+  const handleResolveDispute = (id) => {
+    setEscrows((prev) =>
+      prev.map((escrow) =>
+        escrow.id === id ? { ...escrow, step: 4, status: 'Completed', isDisputed: false } : escrow
+      )
+    );
+    showToast(`Dispute for ${id} has been resolved. Funds released!`);
+  };
 
   return (
     <div className="max-w-4xl">

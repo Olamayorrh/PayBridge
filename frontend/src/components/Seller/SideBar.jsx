@@ -84,7 +84,7 @@ const SideBar = () => {
 
         <div className="p-4 border-t border-slate-100 mb-4">
           <NavLink
-            to="/Buyer/settings"
+            to="/seller/settings"
             onClick={() => setSidebarOpen(false)}
             className={({ isActive }) =>
               `flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer font-medium text-sm transition-all duration-200 ${

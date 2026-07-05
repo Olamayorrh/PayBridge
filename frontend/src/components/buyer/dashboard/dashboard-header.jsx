@@ -1,10 +1,12 @@
 import { RiSearchLine } from '@remixicon/react';
 
-export function DashboardHeader() {
+export function DashboardHeader({ firstName }) {
   return (
     <header className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
       <div>
-        <p className="text-sm font-semibold text-coarse-wool/50">Hi buyer,</p>
+        <p className="text-sm font-semibold text-coarse-wool/50">
+          Hi {firstName || 'buyer'},
+        </p>
         <h1 className="mt-1 text-3xl font-black text-coarse-wool md:text-4xl">
           Welcome to PayBridge!
         </h1>

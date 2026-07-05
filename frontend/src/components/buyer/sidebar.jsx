@@ -2,23 +2,28 @@ import {
   RiCloseLine,
   RiDashboardLine,
   RiExchangeDollarLine,
-  RiMenuLine,
+  RiFileWarningLine,
   RiSettings3Line,
   RiMenuFold2Line,
-  RiMenuFoldLine
+  RiMenuFoldLine,
+  RiLogoutCircleLine,
 } from '@remixicon/react';
+import { NavLink } from 'react-router-dom';
 import { cn } from '../../utils/common';
 
 const navItems = [
-  { label: 'Dashboard', icon: RiDashboardLine, active: true },
-  { label: 'Transactions', icon: RiExchangeDollarLine },
-  { label: 'Settings', icon: RiSettings3Line },
+  { label: 'Dashboard', icon: RiDashboardLine, to: '/buyer' },
+  { label: 'Transactions', icon: RiExchangeDollarLine, to: '/buyer/transactions' },
+  { label: 'Disputes', icon: RiFileWarningLine, to: '/buyer/disputes' },
+  { label: 'Settings', icon: RiSettings3Line, to: '/buyer/settings' },
 ];
 
-export function Sidebar({ isOpen, onToggle, variant = 'desktop' }) {
+export function Sidebar({ isOpen, onToggle, onNavigate, variant = 'desktop' }) {
   const isMobile = variant === 'mobile';
-  const showMobileCloseIcon = isOpen && isMobile 
-  const ToggleIcon = isMobile || isOpen ? ( showMobileCloseIcon? RiCloseLine: RiMenuFoldLine) : RiMenuFold2Line;
+  const showMobileCloseIcon = isOpen && isMobile;
+  const ToggleIcon = isMobile || isOpen
+    ? (showMobileCloseIcon ? RiCloseLine : RiMenuFoldLine)
+    : RiMenuFold2Line;
   const showLabels = isMobile || isOpen;
 
   return (
@@ -35,16 +40,16 @@ export function Sidebar({ isOpen, onToggle, variant = 'desktop' }) {
             <img className="size-6" src="/temporary-logo.png" alt="PayBridge logo" />
             <p className="text-xl font-black leading-none tracking-wide">PayBridge</p>
           </div>
-          <div className={cn(!isOpen &&"border-b-coarse-wool/15 border-b",)}>
-          <button
-            type="button"
-            aria-label={isOpen ? 'Collapse sidebar' : 'Expand sidebar'}
-            aria-expanded={isOpen}
-            onClick={onToggle}
-            className="flex size-10 shrink-0 items-center justify-center rounded-lg text-coarse-wool"
-          >
-            <ToggleIcon size={22} />
-          </button>
+          <div className={cn(!isOpen && 'border-b-coarse-wool/15 border-b')}>
+            <button
+              type="button"
+              aria-label={isOpen ? 'Collapse sidebar' : 'Expand sidebar'}
+              aria-expanded={isOpen}
+              onClick={onToggle}
+              className="flex size-10 shrink-0 items-center justify-center rounded-lg text-coarse-wool"
+            >
+              <ToggleIcon size={22} />
+            </button>
           </div>
         </div>
 
@@ -53,25 +58,41 @@ export function Sidebar({ isOpen, onToggle, variant = 'desktop' }) {
             const Icon = item.icon;
 
             return (
-              <button
+              <NavLink
                 key={item.label}
-                type="button"
+                to={item.to}
+                end={item.to === '/buyer'}
                 title={showLabels ? undefined : item.label}
-                className={`flex h-12 items-center rounded-lg text-left text-sm font-semibold transition-colors ${
+                onClick={onNavigate}
+                className={({ isActive }) => `flex h-12 items-center rounded-lg text-left text-sm font-semibold transition-colors ${
                   showLabels ? 'gap-3 px-4' : 'justify-center px-0'
                 } ${
-                  item.active
+                  isActive
                     ? 'bg-[#151827] text-white shadow-sm'
                     : 'text-[#15182799] hover:bg-[#15182727] hover:text-[#151827]'
                 }`}
               >
                 <Icon size={20} />
                 {showLabels && <span>{item.label}</span>}
-              </button>
+              </NavLink>
             );
           })}
         </nav>
       </div>
+
+      {!isMobile && (
+        <button
+          type="button"
+          aria-label="Log out"
+          title={showLabels ? undefined : 'Log out'}
+          className={`flex h-12 items-center text-left text-sm font-semibold  transition-colors hover:bg-coarse-wool/20 ${
+            showLabels ? 'gap-3 px-4' : 'justify-center px-0'
+          }`}
+        >
+          <RiLogoutCircleLine size={20} />
+          {showLabels && <span>Log out</span>}
+        </button>
+      )}
     </aside>
   );
 }
