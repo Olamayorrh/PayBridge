@@ -5,7 +5,8 @@ import {
   RiFileWarningLine,
   RiSettings3Line,
   RiMenuFold2Line,
-  RiMenuFoldLine
+  RiMenuFoldLine,
+  RiLogoutCircleLine,
 } from '@remixicon/react';
 import { NavLink } from 'react-router-dom';
 import { cn } from '../../utils/common';
@@ -78,6 +79,20 @@ export function Sidebar({ isOpen, onToggle, onNavigate, variant = 'desktop' }) {
           })}
         </nav>
       </div>
+
+      {!isMobile && (
+        <button
+          type="button"
+          aria-label="Log out"
+          title={showLabels ? undefined : 'Log out'}
+          className={`flex h-12 items-center text-left text-sm font-semibold  transition-colors hover:bg-coarse-wool/20 ${
+            showLabels ? 'gap-3 px-4' : 'justify-center px-0'
+          }`}
+        >
+          <RiLogoutCircleLine size={20} />
+          {showLabels && <span>Log out</span>}
+        </button>
+      )}
     </aside>
   );
 }

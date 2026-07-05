@@ -1,7 +1,19 @@
 import { useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
-import { RiMenuLine } from '@remixicon/react';
+import { NavLink, Outlet } from 'react-router-dom';
+import {
+  RiExchangeDollarLine,
+  RiFileWarningLine,
+  RiHome5Line,
+  RiSettings3Line,
+} from '@remixicon/react';
 import { Sidebar } from '../../components/buyer/sidebar';
+
+const mobileNavItems = [
+  { label: 'Home', icon: RiHome5Line, to: '/buyer', end: true },
+  { label: 'Transactions', icon: RiExchangeDollarLine, to: '/buyer/transactions' },
+  { label: 'Disputes', icon: RiFileWarningLine, to: '/buyer/disputes' },
+  { label: 'Settings', icon: RiSettings3Line, to: '/buyer/settings' },
+];
 
 export function BuyerLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
@@ -26,44 +38,12 @@ export function BuyerLayout() {
 
   return (
     <div className="bg-[#F4F6FB] font-inter text-coarse-wool">
-      <header className="fixed left-0 right-0 top-0 z-40 flex h-16 items-center justify-between border-b border-black/5 bg-white px-4 shadow-sm lg:hidden">
+      <header className="fixed inset-x-0 top-0 z-40 flex h-16 items-center border-b border-black/5 bg-white px-4 shadow-sm lg:hidden">
         <div className="flex items-center gap-3">
           <img className="size-8" src="/temporary-logo.png" alt="PayBridge logo" />
           <p className="text-lg font-black leading-none tracking-wide">PayBridge</p>
         </div>
-
-        <button
-          type="button"
-          aria-label="Open sidebar"
-          aria-expanded={isSidebarOpen}
-          onClick={() => setIsSidebarOpen(true)}
-          className="flex size-10 items-center justify-center rounded-lg text-coarse-wool transition-colors hover:bg-[#15182712]"
-        >
-          <RiMenuLine size={23} />
-        </button>
       </header>
-
-      {isSidebarOpen && (
-        <button
-          type="button"
-          aria-label="Close sidebar backdrop"
-          className="fixed inset-0 z-40 bg-black/35 backdrop-blur-sm lg:hidden"
-          onClick={() => setIsSidebarOpen(false)}
-        />
-      )}
-
-      <div
-        className={`fixed inset-y-0 left-0 z-50 lg:hidden ${
-          isSidebarOpen ? 'pointer-events-auto' : 'pointer-events-none'
-        }`}
-      >
-        <Sidebar
-          variant="mobile"
-          isOpen={isSidebarOpen}
-          onToggle={() => setIsSidebarOpen(false)}
-          onNavigate={() => setIsSidebarOpen(false)}
-        />
-      </div>
 
       <div className="flex min-h-screen lg:h-screen lg:overflow-hidden">
         <div className="hidden lg:block lg:h-screen lg:shrink-0">
@@ -74,10 +54,45 @@ export function BuyerLayout() {
           />
         </div>
 
-        <main className="min-w-0 flex-1 px-4 pb-6 pt-22 sm:px-6 lg:h-screen lg:overflow-y-auto lg:px-8 lg:py-10">
+        <main className="min-w-0 flex-1 px-4 pb-[calc(6.5rem+env(safe-area-inset-bottom))] pt-22 sm:px-6 lg:h-screen lg:overflow-y-auto lg:px-8 lg:py-10">
           <Outlet />
         </main>
       </div>
+
+      <nav
+        aria-label="Buyer mobile navigation"
+        className="fixed inset-x-0 bottom-0 z-40 border-t border-black/10 bg-white/95 px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-2 shadow-[0_-10px_30px_rgba(21,24,39,0.08)] backdrop-blur lg:hidden"
+      >
+        <div className="mx-auto grid max-w-md grid-cols-4 gap-1">
+          {mobileNavItems.map((item) => {
+            const Icon = item.icon;
+
+            return (
+              <NavLink
+                key={item.label}
+                to={item.to}
+                end={item.end}
+                className={({ isActive }) =>
+                  `flex min-h-16 flex-col items-center justify-center gap-1 rounded-lg px-1 text-xs font-black transition-colors ${
+                    isActive ? 'text-coarse-wool' : 'text-[#64748b] hover:text-coarse-wool'
+                  }`
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    <span
+                      className='flex size-10 items-center justify-center  rounded-xl transition-colors'
+                    >
+                      <Icon size={25} />
+                    </span>
+                    <span>{item.label}</span>
+                  </>
+                )}
+              </NavLink>
+            );
+          })}
+        </div>
+      </nav>
     </div>
   );
 }

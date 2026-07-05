@@ -3,9 +3,9 @@ import {
   RiBankCardLine,
   RiCustomerService2Line,
   RiDeleteBinLine,
-  RiLogoutBoxRLine,
   RiShieldCheckLine,
   RiUserLine,
+  RiLogoutCircleLine
 } from '@remixicon/react';
 import { getBuyerSettings } from '../../data/buyer-mock-data';
 import { StatusBadge, ToggleRow } from '../../components/buyer/shared';
@@ -105,22 +105,23 @@ export function BuyerSettings() {
         <div className="flex flex-col gap-0">
           <SettingsPanel
             title="Profile Photo"
-            description="This will be displayed on your PayBridge buyer account and support messages."
+            description="This will be displayed on your account"
           >
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-center gap-4">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-end sm:gap-5">
+              <div className="flex flex-col items-center gap-2 justify-center">
                 <div className="flex size-20 shrink-0 items-center justify-center rounded-full border border-black/10 bg-[#151827] text-2xl font-black text-white">
                   {getInitials(settings.profile.fullName)}
                 </div>
-                <p className="text-sm font-semibold text-coarse-wool/50">
-                  PNG, JPG or SVG. Max 2MB.
+                <p className="text-sm font-semibold hidden text-coarse-wool/50">
+                 Max 2MB.
                 </p>
               </div>
               <button
                 type="button"
-                className="h-10 rounded-lg border border-black/10 bg-white px-4 text-sm font-black text-coarse-wool transition-colors hover:bg-[#1518270d]"
+                className="h-10 rounded-lg border border-black/10 bg-white px-4 text-sm flex gap-1 items-center justify-center font-black text-coarse-wool transition-colors hover:bg-[#1518270d]"
               >
-                Upload New Photo
+               <span> Upload New Photo</span>
+                <span className='text-xs font-normal'>(Max 2MB)</span>
               </button>
             </div>
           </SettingsPanel>
@@ -342,7 +343,7 @@ export function BuyerSettings() {
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col gap-6">
-      <header className="flex items-center justify-between gap-4">
+      <header className="flex flex-col justify-between gap-4">
         <div>
           <h1 className="text-3xl font-black text-coarse-wool">Settings</h1>
           <p className="mt-2 max-w-2xl text-sm font-medium leading-6 text-coarse-wool/55">
@@ -351,10 +352,11 @@ export function BuyerSettings() {
         </div>
         <button
           type="button"
-          className="flex size-11 shrink-0 items-center justify-center rounded-lg border border-black/10 bg-white text-rose-700"
+          className="flex w-full shrink-0 items-center justify-center gap-2 bg-white py-2 my-2 font-bold lg:hidden"
           aria-label="Log out"
         >
-          <RiLogoutBoxRLine size={19} />
+          <RiLogoutCircleLine size={19} />
+          <span className='font-bold'>Log out</span>
         </button>
       </header>
 
