@@ -8,6 +8,9 @@ const rateLimit  = require('express-rate-limit');
 
 const authRoutes = require('./routes/auth.routes');
 const userRoutes = require('./routes/user.routes');
+const escrowRoutes = require('./routes/escrow.routes');
+const transactionRoutes = require('./routes/transaction.routes');
+const walletRoutes = require('./routes/wallet.routes');
 const globalErrorHandler =
   require('./middlewares/globalErrorHandler.middleware');
 
@@ -82,6 +85,9 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/api/auth',  authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/escrows', escrowRoutes);
+app.use('/api/transactions', transactionRoutes);
+app.use('/api/wallets', walletRoutes);
 
 // ─────────────────────────────────────────────
 // HEALTH CHECK

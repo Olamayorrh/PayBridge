@@ -26,6 +26,14 @@ model User {
   // Relation to refresh tokens (cascade delete on user removal)
   refreshTokens   RefreshToken[]
 
+  escrowsAsBuyer  Escrow[]       @relation("EscrowAsBuyer")
+  escrowsAsSeller Escrow[]       @relation("EscrowAsSeller")
+  transactions    Transaction[]
+  wallets         Wallet[]
+  disputesRaised  Dispute[]
+  notifications   Notification[]
+  attachments     Attachment[]
+
   @@map("users")
 }
 
@@ -72,4 +80,388 @@ enum UserStatus {
   ACTIVE
   SUSPENDED
   DELETED
+}
+
+// ═════════════════════════════════════════════════════════════════
+// ESCROW / AGREEMENT
+// ═════════════════════════════════════════════════════════════════
+
+// Lifecycle of an escrow agreement. Transitions are enforced in the
+// service layer (escrow.service.js), not just by this enum.
+//
+//   DRAFT -> PENDING_ACCEPTANCE -> FUNDED -> IN_PROGRESS -> DELIVERED
+//         -> COMPLETED
+//   any of [PENDING_ACCEPTANCE, FUNDED, IN_PROGRESS, DELIVERED] -> DISPUTED
+//   DISPUTED -> RESOLVED -> (COMPLETED | REFUNDED)
+//   [DRAFT, PENDING_ACCEPTANCE] -> CANCELLED
+//   FUNDED (no seller action in time) -> EXPIRED -> REFUNDED
+enum EscrowStatus {
+  DRAFT
+  PENDING_ACCEPTANCE
+  FUNDED
+  IN_PROGRESS
+  DELIVERED
+  DISPUTED
+  RESOLVED
+  COMPLETED
+  CANCELLED
+  REFUNDED
+  EXPIRED
+}
+
+model Escrow {
+  id          String       @id @default(uuid())
+
+  buyerId     String
+  sellerId    String
+  buyer       User         @relation("EscrowAsBuyer", fields: [buyerId], references: [id])
+  seller      User         @relation("EscrowAsSeller", fields: [sellerId], references: [id])
+
+  title       String
+  description String?      @db.Text
+
+  amount      Decimal      @db.Decimal(18, 2)
+  feeAmount   Decimal      @default(0) @db.Decimal(18, 2)
+  currency    String       @db.VarChar(3)
+
+  deliveryAddress String?  @db.Text
+
+  status      EscrowStatus @default(DRAFT)
+
+  buyerAcceptedAt  DateTime?
+  sellerAcceptedAt DateTime?
+
+  fundedAt    DateTime?
+  deliveredAt DateTime?
+  completedAt DateTime?
+  cancelledAt DateTime?
+
+  expiresAt   DateTime?
+
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  transactions Transaction[]
+  disputes     Dispute[]
+  attachments  Attachment[]
+
+  @@index([buyerId])
+  @@index([sellerId])
+  @@index([status])
+  @@map("escrows")
+}
+
+// ═════════════════════════════════════════════════════════════════
+// TRANSACTIONS  (immutable movement history)
+// ═════════════════════════════════════════════════════════════════
+
+enum TransactionType {
+  DEPOSIT
+  ESCROW_FUND
+  ESCROW_RELEASE
+  ESCROW_REFUND
+  WITHDRAWAL
+  FEE
+  ADJUSTMENT
+}
+
+enum TransactionStatus {
+  PENDING
+  PROCESSING
+  SUCCESS
+  FAILED
+  REVERSED
+}
+
+model Transaction {
+  id          String             @id @default(uuid())
+  reference   String             @unique @default(uuid())
+
+  userId      String
+  user        User               @relation(fields: [userId], references: [id])
+
+  escrowId    String?
+  escrow      Escrow?            @relation(fields: [escrowId], references: [id])
+
+  walletId    String
+  wallet      Wallet             @relation(fields: [walletId], references: [id])
+
+  type        TransactionType
+  status      TransactionStatus  @default(PENDING)
+
+  amount      Decimal            @db.Decimal(18, 2)
+  currency    String             @db.VarChar(3)
+
+  bankName    String?
+  description String?
+
+  balanceBefore Decimal?         @db.Decimal(18, 2)
+  balanceAfter  Decimal?         @db.Decimal(18, 2)
+
+  payment     Payment?
+
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  @@index([userId])
+  @@index([escrowId])
+  @@index([walletId])
+  @@index([status])
+  @@map("transactions")
+}
+
+// ═════════════════════════════════════════════════════════════════
+// PAYMENTS  (external provider — Flutterwave etc.)
+// ═════════════════════════════════════════════════════════════════
+
+enum PaymentProvider {
+  FLUTTERWAVE
+  BANK_TRANSFER
+  MANUAL
+}
+
+enum PaymentProviderStatus {
+  INITIATED
+  SUCCESSFUL
+  FAILED
+  CANCELLED
+}
+
+model Payment {
+  id                 String                 @id @default(uuid())
+
+  transactionId      String                 @unique
+  transaction        Transaction            @relation(fields: [transactionId], references: [id])
+
+  provider           PaymentProvider        @default(FLUTTERWAVE)
+  providerRef        String                 @unique
+  providerTxId       String?
+
+  providerStatus     PaymentProviderStatus  @default(INITIATED)
+  verificationResult Json?
+
+  amount             Decimal                @db.Decimal(18, 2)
+  currency           String                 @db.VarChar(3)
+
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+
+  @@index([providerStatus])
+  @@map("payments")
+}
+
+// ═════════════════════════════════════════════════════════════════
+// WALLET + LEDGER  (source of truth for balances)
+// ═════════════════════════════════════════════════════════════════
+
+model Wallet {
+  id             String   @id @default(uuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
+
+  currency       String   @db.VarChar(3)
+
+  balance        Decimal  @default(0) @db.Decimal(18, 2)
+  escrowBalance  Decimal  @default(0) @db.Decimal(18, 2)
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  transactions   Transaction[]
+  ledgerEntries  LedgerEntry[]
+
+  @@unique([userId, currency])
+  @@map("wallets")
+}
+
+enum LedgerDirection {
+  DEBIT
+  CREDIT
+}
+
+model LedgerEntry {
+  id            String          @id @default(uuid())
+
+  walletId      String
+  wallet        Wallet          @relation(fields: [walletId], references: [id])
+
+  transactionId String
+
+  direction     LedgerDirection
+  amount        Decimal         @db.Decimal(18, 2)
+  balanceAfter  Decimal         @db.Decimal(18, 2)
+
+  createdAt     DateTime        @default(now())
+
+  @@index([walletId])
+  @@index([transactionId])
+  @@map("ledger_entries")
+}
+
+// ═════════════════════════════════════════════════════════════════
+// DISPUTES
+// ═════════════════════════════════════════════════════════════════
+
+enum DisputeStatus {
+  OPEN
+  UNDER_REVIEW
+  RESOLVED_BUYER
+  RESOLVED_SELLER
+  REJECTED
+}
+
+model Dispute {
+  id           String        @id @default(uuid())
+
+  escrowId     String
+  escrow       Escrow        @relation(fields: [escrowId], references: [id])
+
+  raisedById   String
+  raisedBy     User          @relation(fields: [raisedById], references: [id])
+
+  reason       String        @db.Text
+  status       DisputeStatus @default(OPEN)
+
+  resolution   String?       @db.Text
+  resolvedById String?
+  resolvedAt   DateTime?
+
+  attachments  Attachment[]
+
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([escrowId])
+  @@index([status])
+  @@map("disputes")
+}
+
+// ═════════════════════════════════════════════════════════════════
+// NOTIFICATIONS
+// ═════════════════════════════════════════════════════════════════
+
+enum NotificationChannel {
+  EMAIL
+  SMS
+  PUSH
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+model Notification {
+  id        String              @id @default(uuid())
+
+  userId    String
+  user      User                @relation(fields: [userId], references: [id])
+
+  channel   NotificationChannel
+  type      String
+  title     String
+  body      String              @db.Text
+  metadata  Json?
+
+  status    NotificationStatus  @default(PENDING)
+  sentAt    DateTime?
+
+  createdAt DateTime            @default(now())
+
+  @@index([userId])
+  @@index([status])
+  @@map("notifications")
+}
+
+// ═════════════════════════════════════════════════════════════════
+// AUDIT LOG  (polymorphic — attaches to any entity)
+// ═════════════════════════════════════════════════════════════════
+
+model AuditLog {
+  id         String   @id @default(uuid())
+
+  actorId    String?
+  action     String
+
+  entityType String
+  entityId   String
+
+  before     Json?
+  after      Json?
+
+  ipAddress  String?
+  userAgent  String?
+
+  createdAt  DateTime @default(now())
+
+  @@index([entityType, entityId])
+  @@index([actorId])
+  @@map("audit_logs")
+}
+
+// ═════════════════════════════════════════════════════════════════
+// ATTACHMENTS  (polymorphic — proof of delivery, contracts, etc.)
+// ═════════════════════════════════════════════════════════════════
+
+enum AttachmentType {
+  PROOF_OF_DELIVERY
+  CONTRACT
+  SCREENSHOT
+  OTHER
+}
+
+model Attachment {
+  id         String         @id @default(uuid())
+
+  uploaderId String
+  uploader   User           @relation(fields: [uploaderId], references: [id])
+
+  escrowId   String?
+  escrow     Escrow?        @relation(fields: [escrowId], references: [id])
+
+  disputeId  String?
+  dispute    Dispute?       @relation(fields: [disputeId], references: [id])
+
+  type       AttachmentType @default(OTHER)
+  fileUrl    String
+  fileName   String
+  mimeType   String?
+  fileSize   Int?
+
+  createdAt  DateTime       @default(now())
+
+  @@index([escrowId])
+  @@index([disputeId])
+  @@map("attachments")
+}
+
+// ═════════════════════════════════════════════════════════════════
+// OUTBOX  (transactional outbox pattern for reliable Kafka publish)
+// ═════════════════════════════════════════════════════════════════
+
+enum OutboxStatus {
+  PENDING
+  PUBLISHED
+  FAILED
+}
+
+model OutboxEvent {
+  id            String       @id @default(uuid())
+
+  aggregateType String
+  aggregateId   String
+
+  eventType     String
+  payload       Json
+
+  status        OutboxStatus @default(PENDING)
+  attempts      Int          @default(0)
+  lastError     String?
+
+  createdAt     DateTime     @default(now())
+  publishedAt   DateTime?
+
+  @@index([status])
+  @@map("outbox_events")
 }
